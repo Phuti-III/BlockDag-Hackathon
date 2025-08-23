@@ -1,0 +1,11 @@
+{
+  "contractAddress": "0xf5ea995aEE58B09dD9fbe2f8228a97c74129685A",
+  "deploymentTxHash": "0xad2370543d489c192cd6e86a46280b0db0f4ff814aad21e709685429d0c35caf",
+  "blockNumber": 1003246,
+  "gasUsed": "2529387",
+  "deployer": "0x8732F4d3F2f91BbB19F061F119F397d5cbC17d3c",
+  "network": "primordial",
+  "chainId": 1043,
+  "timestamp": "2025-08-23T20:34:28.239Z",
+  "contractName": "FileStorageManager"
+}

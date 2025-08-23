@@ -1,32 +1,83 @@
 {
-  "name": "blockdag-contracts",
+  "name": "blockdag-file-storage",
   "version": "1.0.0",
-  "description": "BlockDAG Smart Contracts",
+  "description": "Decentralized File Storage System on BlockDAG with Role-based Access Control",
   "scripts": {
     "compile": "hardhat compile",
     "test": "hardhat test",
+    "test:coverage": "hardhat coverage",
+    "test:gas": "REPORT_GAS=true hardhat test",
     "deploy": "hardhat run scripts/deploy.ts --network primordial",
     "deploy:local": "hardhat run scripts/deploy.ts --network localhost",
+    "setup-roles": "hardhat run scripts/setup-roles.ts --network primordial",
+    "setup-roles:local": "hardhat run scripts/setup-roles.ts --network localhost",
     "verify": "hardhat verify --network primordial",
     "node": "hardhat node",
-    "clean": "hardhat clean"
+    "clean": "hardhat clean",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "format": "prettier --write \"**/*.{ts,js,json,md}\"",
+    "type-check": "tsc --noEmit",
+    "flatten": "hardhat flatten contracts/FileStorageManager.sol > flattened.sol",
+    "size": "hardhat size-contracts"
   },
+  "keywords": [
+    "blockchain",
+    "blockdag",
+    "file-storage",
+    "ipfs",
+    "smart-contracts",
+    "decentralized",
+    "law-enforcement",
+    "access-control"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
   "devDependencies": {
+    "@nomicfoundation/hardhat-chai-matchers": "^2.0.0",
     "@nomicfoundation/hardhat-ethers": "^3.0.5",
+    "@nomicfoundation/hardhat-ignition": "^0.15.0",
+    "@nomicfoundation/hardhat-ignition-ethers": "^0.15.0",
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.0",
     "@nomicfoundation/hardhat-toolbox": "^4.0.0",
     "@nomicfoundation/hardhat-verify": "^2.0.0",
-    "@openzeppelin/hardhat-upgrades": "^3.9.0",
-    "@types/chai": "^4.3.11",
-    "@types/mocha": "^10.0.6",
-    "@types/node": "^20.11.24",
-    "chai": "^4.4.1",
-    "ethers": "^6.11.1",
-    "hardhat": "^2.19.5",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.3.3"
+    "@openzeppelin/hardhat-upgrades": "^3.0.0",
+    "@typechain/ethers-v6": "^0.5.0",
+    "@typechain/hardhat": "^9.0.0",
+    "@types/chai": "^4.2.0",
+    "@types/mocha": ">=9.1.0",
+    "@types/node": ">=18.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "chai": "^4.2.0",
+    "eslint": "^8.0.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "hardhat": "^2.19.0",
+    "hardhat-contract-sizer": "^2.10.0",
+    "hardhat-gas-reporter": "^1.0.8",
+    "prettier": "^3.0.0",
+    "prettier-plugin-solidity": "^1.2.0",
+    "solidity-coverage": "^0.8.0",
+    "ts-node": ">=8.0.0",
+    "typechain": "^8.3.0",
+    "typescript": ">=4.5.0"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^5.0.1",
-    "dotenv": "^16.4.5"
-  }
+    "dotenv": "^16.3.0",
+    "ethers": "^6.8.0"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=7.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/blockdag-file-storage.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/blockdag-file-storage/issues"
+  },
+  "homepage": "https://github.com/your-username/blockdag-file-storage#readme"
 }

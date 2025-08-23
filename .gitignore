@@ -1,6 +1,5 @@
-<<<<<<< HEAD
 node_modules
-=======
+
 # Dependencies
 node_modules
 .pnp
@@ -56,4 +55,3 @@ yarn-error.log*
 
 # Misc
 *.log 
->>>>>>> main

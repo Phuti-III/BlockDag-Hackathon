@@ -4,7 +4,10 @@ import { ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 import { Button, buttonVariants } from "@/components/ui/button";
-import uyinene from '@/components/images/uyinene.png';
+import Image from 'next/image';
+import Link from 'next/link';
+import logo from '@/components/images/logo.jpg';
+
 
 export default function Hero12() {
   return (
@@ -13,35 +16,36 @@ export default function Hero12() {
         <div className="mx-auto flex max-w-5xl flex-col items-center">
           <div className="flex flex-col items-center gap-6 text-center">
             <div className="rounded-xl bg-background/30 p-4 shadow-sm backdrop-blur-sm">
-              <img
-                src="uyinene.png"
-                alt="logo"
-                className="h-16"
+              <Image
+                src={logo}
+                alt="Uyinene logo"
+                className="h-25 w-30 "
               />
             </div>
-            <div>
+            <div >
               <h1 className="mb-6 text-2xl font-bold tracking-tight text-pretty lg:text-5xl">
-                Build your next project with{" "}
+                Secure. Verify. Empower.{" "}
                 <span className="text-primary">Blocks</span>
               </h1>
-              <p className="mx-auto max-w-3xl text-muted-foreground lg:text-xl">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Elig
-                doloremque mollitia fugiat omnis! Porro facilis quo animi
-                consequatur. Explicabo.
+              <p className="mx-auto max-w-3xl text-muted-foreground lg:text-xl text-center">
+                Uyinene’s Ledger helps South African women safely store and manage critical digital evidence, giving you control over your own story.
               </p>
             </div>
             <div className="mt-6 flex justify-center gap-3">
-              <Button className="shadow-sm transition-shadow hover:shadow">
-                Get Started
+
+              <Button className="shadow-sm transition-shadow hover:shadow" asChild>
+                <Link href="/login">Login</Link>
               </Button>
-              <Button variant="outline" className="group">
-                Learn more{" "}
-                <ExternalLink className="ml-2 h-4 transition-transform group-hover:translate-x-0.5" />
+              <Button variant="outline" className="group" asChild>
+                <Link href="/register">
+                Register{" "}
+                <ExternalLink className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                </Link>
               </Button>
             </div>
             <div className="mt-20 flex flex-col items-center gap-5">
-              <p className="font-medium text-muted-foreground lg:text-left">
-                Built with open-source technologies
+              <p className="font-medium text-red-600 lg:text-left ">
+                EMERGENCY
               </p>
               <div className="flex flex-wrap items-center justify-center gap-4">
                 <a
@@ -92,8 +96,8 @@ export default function Hero12() {
                   )}
                 >
                   <img
-                    src="https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/tailwind-icon.svg"
-                    alt="Tailwind CSS logo"
+                    src="https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/police-icon.svg"
+                    alt="Police logo"
                     className="h-6 saturate-0 transition-all group-hover:saturate-100"
                   />
                 </a>

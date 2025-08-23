@@ -21,12 +21,12 @@ export function LoginForm({
               <div className="flex size-8 items-center justify-center rounded-md">
                 <GalleryVerticalEnd className="size-6" />
               </div>
-              <span className="sr-only">Acme Inc.</span>
+              <span className="sr-only">UL Inc.</span>
             </a>
-            <h1 className="text-xl font-bold">Welcome to Acme Inc.</h1>
+            <h1 className="text-xl font-bold">Welcome to Uyinene's Ledger.</h1>
             <div className="text-center text-sm">
               Don&apos;t have an account?{" "}
-              <a href="#" className="underline underline-offset-4">
+              <a href="/register" className="underline underline-offset-4">
                 Sign up
               </a>
             </div>
@@ -37,7 +37,7 @@ export function LoginForm({
               <Input
                 id="email"
                 type="email"
-                placeholder="m@example.com"
+                placeholder="uyinene@example.com"
                 required
               />
             </div>

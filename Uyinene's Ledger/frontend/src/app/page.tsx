@@ -1,6 +1,4 @@
 "use client";
-import { ExternalLink } from "lucide-react";
-
 import { cn } from "@/lib/utils";
 
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -38,8 +36,7 @@ export default function Hero12() {
               </Button>
               <Button variant="outline" className="group" asChild>
                 <Link href="/register">
-                Register{" "}
-                <ExternalLink className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                Register
                 </Link>
               </Button>
             </div>

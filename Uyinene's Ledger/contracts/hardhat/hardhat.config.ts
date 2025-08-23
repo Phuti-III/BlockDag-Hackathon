@@ -4,6 +4,13 @@ import '@openzeppelin/hardhat-upgrades';
 import * as dotenv from "dotenv";
 
 dotenv.config();
+// Validate environment variables
+const DEPLOYER_PRIVATE_KEY = process.env.DEPLOYER_PRIVATE_KEY;
+
+if (!DEPLOYER_PRIVATE_KEY) {
+  console.warn("  DEPLOYER_PRIVATE_KEY not found in .env file");
+  console.warn("   Create a .env file with your private key to deploy to networks");
+}
 
 const config: HardhatUserConfig = {
   solidity: {
@@ -11,7 +18,7 @@ const config: HardhatUserConfig = {
     settings: {
       optimizer: {
         enabled: true,
-        runs: 1,
+        runs: 200,
         details: {
           yul: true,
           yulDetails: {
@@ -29,13 +36,20 @@ const config: HardhatUserConfig = {
       accounts: [process.env.DEPLOYER_PRIVATE_KEY || ""],
       chainId: 1043,
       gasPrice: 50000000000, // 50 gwei
-      timeout: 200000
+      timeout: 200000,
+      httpHeaders: {
+        "User-Agent": "Hardhat/BlockDAG-Client"
+      }
     },
     hardhat: {
       chainId: 31337,
+      gas: 12000000,
+      blockGasLimit: 12000000,
+      allowUnlimitedContractSize: true
     },
     localhost: {
       url: "http://localhost:8545",
+      timeout: 60000
     }
   },
   etherscan: {
@@ -61,6 +75,10 @@ const config: HardhatUserConfig = {
   },
   mocha: {
     timeout: 60000
+  },
+  gasReporter: {
+    enabled: process.env.REPORT_GAS !== undefined,
+    currency: "USD"
   }
 } as const;
 

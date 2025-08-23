@@ -15,15 +15,15 @@ export function LoginForm({
       <form>
         <div className="flex flex-col gap-6">
           <div className="flex flex-col items-center gap-2">
-            <a
-              href="#"
+            <Link
+              href="/"
               className="flex flex-col items-center gap-2 font-medium"
             >
               <div className="flex size-8 items-center justify-center rounded-md">
                 <IoIosBook size={30} color="blacks" />
               </div>
               <span className="sr-only">UL Inc.</span>
-            </a>
+            </Link>
             <h1 className="text-xl font-bold"> Welcome to Uyinene's Ledger</h1>
             <div className="text-center text-sm">
               Don&apos;t have an account?{" "}
@@ -46,6 +46,8 @@ export function LoginForm({
                 type="password"
                 placeholder="********"
                 required
+                pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&]).{8,}$"
+                title="Must contain at least 8 characters, one letter, one number and one special character"
               />
             </div>
             <Button variant="outline" type="submit" className="w-full hover:bg-blue-600 hover:text-white">

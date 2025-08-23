@@ -7,13 +7,13 @@ import Link from 'next/link';
 import logo from '@/components/images/logo.jpg';
 
 
-export default function Hero12() {
+export default function LandingPage() {
   return (
     <section className="relative overflow-hidden py-32">
-      <div className="relative z-10 container">
+      <div className="relative z-10 container mx-auto">
         <div className="mx-auto flex max-w-5xl flex-col items-center">
           <div className="flex flex-col items-center gap-6 text-center">
-            <div className="rounded-xl bg-background/30 p-4 shadow-sm backdrop-blur-sm">
+            <div className="backdrop-blur-sm">
               <Image
                 src={logo}
                 alt="Uyinene logo"
@@ -22,8 +22,7 @@ export default function Hero12() {
             </div>
             <div >
               <h1 className="mb-6 text-2xl font-bold tracking-tight text-pretty lg:text-5xl">
-                Secure. Verify. Empower.{" "}
-                <span className="text-primary">Blocks</span>
+                Secure. Verify. Empower.
               </h1>
               <p className="mx-auto max-w-3xl text-muted-foreground lg:text-xl text-center">
                 Uyinene’s Ledger helps South African women safely store and manage critical digital evidence, giving you control over your own story.
@@ -107,4 +106,4 @@ export default function Hero12() {
   );
 };
 
-export { Hero12 };
+export { LandingPage };

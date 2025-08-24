@@ -138,81 +138,77 @@ const Upload = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-6">
             {/* File Upload Area */}
-<Card className="shadow-gentle">
-  <CardHeader>
-    <CardTitle className="flex items-center">
-      <UploadIcon className="h-5 w-5 mr-2" />
-      Select Documents / Videos
-    </CardTitle>
-  </CardHeader>
-  <CardContent>
-    <div
-      className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
-        dragActive ? 'border-primary bg-primary-soft/20' : 'border-border hover:border-primary'
-      }`}
-      onDragEnter={handleDrag}
-      onDragLeave={handleDrag}
-      onDragOver={handleDrag}
-      onDrop={handleDrop}
-    >
-      <UploadIcon className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-      <h3 className="text-lg font-semibold text-foreground mb-2">
-        Drag and drop your files here
-      </h3>
-      <p className="text-muted-foreground mb-4">
-        Or click to browse your device
-      </p>
-      <input
-        type="file"
-        multiple
-        accept="image/*,video/*,application/pdf,text/plain"
-        className="hidden"
-        id="file-upload"
-        onChange={(e) =>
-          e.target.files && handleFiles(Array.from(e.target.files))
-        }
-      />
-      <label htmlFor="file-upload">
-        <Button variant="outline" className="cursor-pointer">
-          Browse Files
-        </Button>
-      </label>
-      <p className="text-sm text-muted-foreground mt-3">
-        Supported: Images, Videos, PDFs, Text Documents (Max 50MB each)
-      </p>
-    </div>
-
-    {/* File List */}
-    {files.length > 0 && (
-      <div className="mt-6 space-y-3">
-        <h4 className="font-medium text-foreground">Selected Files ({files.length})</h4>
-        {files.map((file, index) => {
-          const FileIcon = getFileIcon(file);
-          return (
-            <div key={index} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
-              <div className="flex items-center space-x-3">
-                <FileIcon className="h-8 w-8 text-primary" />
-                <div>
-                  <p className="font-medium text-foreground text-sm">{file.name}</p>
-                  <p className="text-xs text-muted-foreground">{formatFileSize(file.size)}</p>
+            <Card className="shadow-gentle">
+              <CardHeader>
+                <CardTitle className="flex items-center">
+                  <UploadIcon className="h-5 w-5 mr-2" />
+                  Select Documents
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div
+                  className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
+                    dragActive ? 'border-primary bg-primary-soft/20' : 'border-border hover:border-primary'
+                  }`}
+                  onDragEnter={handleDrag}
+                  onDragLeave={handleDrag}
+                  onDragOver={handleDrag}
+                  onDrop={handleDrop}
+                >
+                  <UploadIcon className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                  <h3 className="text-lg font-semibold text-foreground mb-2">
+                    Drag and drop your files here
+                  </h3>
+                  <p className="text-muted-foreground mb-4">
+                    Or click to browse your device
+                  </p>
+                  <input
+                    type="file"
+                    multiple
+                    className="hidden"
+                    id="file-upload"
+                    onChange={(e) => e.target.files && handleFiles(Array.from(e.target.files))}
+                  />
+                  <label htmlFor="file-upload">
+                    <Button variant="outline" className="cursor-pointer">
+                      Browse Files
+                    </Button>
+                  </label>
+                  <p className="text-sm text-muted-foreground mt-3">
+                    Supported: Images, PDFs, Text Documents (Max 50MB each)
+                  </p>
                 </div>
-              </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => removeFile(index)}
-                className="text-destructive hover:text-destructive"
-              >
-                Remove
-              </Button>
-            </div>
-          );
-        })}
-      </div>
-    )}
-  </CardContent>
-</Card>
 
+                {/* File List */}
+                {files.length > 0 && (
+                  <div className="mt-6 space-y-3">
+                    <h4 className="font-medium text-foreground">Selected Files ({files.length})</h4>
+                    {files.map((file, index) => {
+                      const FileIcon = getFileIcon(file);
+                      return (
+                        <div key={index} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
+                          <div className="flex items-center space-x-3">
+                            <FileIcon className="h-8 w-8 text-primary" />
+                            <div>
+                              <p className="font-medium text-foreground text-sm">{file.name}</p>
+                              <p className="text-xs text-muted-foreground">{formatFileSize(file.size)}</p>
+                            </div>
+                          </div>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => removeFile(index)}
+                            className="text-destructive hover:text-destructive"
+                          >
+                            Remove
+                          </Button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
 
             {/* Metadata Form */}
             <Card className="shadow-gentle">

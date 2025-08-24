@@ -6,8 +6,8 @@ import { Providers } from "./providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "BlockDAG Starter Kit",
-  description: "A starter kit for building on BlockDAG",
+  title: "Uyinene's Ledger",
+  description: "Evidence documentation platform for survivors",
 };
 
 export default function RootLayout({

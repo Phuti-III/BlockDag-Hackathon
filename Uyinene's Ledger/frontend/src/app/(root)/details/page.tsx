@@ -1,0 +1,1 @@
+//this page is for the detailed view of a single evidence item

@@ -59,7 +59,7 @@ function checkDockerInstalled() {
 
 function checkIPFSRunning() {
   return new Promise((resolve) => {
-    exec('curl -s http://localhost:5001/api/v0/version', (error) => {
+    exec('curl -s http://localhost:3000/api/v0/version', (error) => {
       resolve(!error);
     });
   });
@@ -74,7 +74,7 @@ const crypto = require('crypto');
 const multer = require('multer');
 
 const app = express();
-const PORT = 5001;
+const PORT = 3000;
 const mockStorage = new Map();
 
 app.use(express.json());
@@ -158,7 +158,7 @@ services:
     container_name: blockdag-ipfs
     ports:
       - "4001:4001"
-      - "5001:5001" 
+      - "3000:3000"
       - "8080:8080"
     volumes:
       - ./ipfs-data:/data/ipfs
@@ -262,8 +262,8 @@ async function main() {
       
     case '5':
       ipfsProcess = await startMockIPFS();
-      log('✅ Mock IPFS Server started on port 5001', 'green');
-      log('🔗 Health check: http://localhost:5001/health', 'cyan');
+      log('✅ Mock IPFS Server started on port 3000', 'green');
+      log('🔗 Health check: http://localhost:3000/health', 'cyan');
       log('Press Ctrl+C to stop', 'yellow');
       
       // Keep process alive

@@ -6,7 +6,7 @@ const crypto = require('crypto');
 const multer = require('multer');
 
 const app = express();
-const PORT = 5001;
+const PORT = 3000;
 
 // In-memory storage for mock IPFS
 const mockStorage = new Map();

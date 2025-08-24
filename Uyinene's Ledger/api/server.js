@@ -14,7 +14,7 @@ app.use(express.json());
 
 // IPFS Setup with fallback to mock
 let ipfs;
-let usingMockIPFS = false;
+let usingMockIPFS = true;
 
 async function setupIPFS() {
   try {
@@ -24,7 +24,7 @@ async function setupIPFS() {
     // Check if IPFS daemon is running
     ipfs = create({
       host: process.env.IPFS_HOST || 'localhost',
-      port: process.env.IPFS_PORT || 5001,
+      port: process.env.IPFS_PORT || 3000,
       protocol: process.env.IPFS_PROTOCOL || 'http'
     });
     
@@ -35,6 +35,7 @@ async function setupIPFS() {
     
   } catch (error) {
     console.log('⚠️  IPFS daemon not available, using mock IPFS');
+    console.log('   IPFS connection error:', error.message);
     usingMockIPFS = true;
     
     // Mock IPFS implementation
@@ -64,6 +65,36 @@ async function setupIPFS() {
 // Initialize IPFS on startup
 setupIPFS().catch(console.error);
 
+// Check if private keys are valid
+function checkPrivateKeys() {
+  try {
+    // Check user private key
+    if (DEMO_ACCOUNTS.user.privateKey.startsWith('0x') && DEMO_ACCOUNTS.user.privateKey.length === 66) {
+      // This is likely a valid private key format
+      console.log('✅ User private key format appears valid');
+    } else if (DEMO_ACCOUNTS.user.privateKey === '0x' + '0'.repeat(64)) {
+      console.log('⚠️  User private key is using mock/fallback value (all zeros)');
+    } else {
+      console.log('⚠️  User private key format may be invalid');
+    }
+    
+    // Check law enforcement private key
+    if (DEMO_ACCOUNTS.lawEnforcement.privateKey.startsWith('0x') && DEMO_ACCOUNTS.lawEnforcement.privateKey.length === 66) {
+      // This is likely a valid private key format
+      console.log('✅ Law enforcement private key format appears valid');
+    } else if (DEMO_ACCOUNTS.lawEnforcement.privateKey === '0x' + '0'.repeat(64)) {
+      console.log('⚠️  Law enforcement private key is using mock/fallback value (all zeros)');
+    } else {
+      console.log('⚠️  Law enforcement private key format may be invalid');
+    }
+  } catch (error) {
+    console.log('⚠️  Error checking private keys:', error.message);
+  }
+}
+
+// Run the private key check
+checkPrivateKeys();
+
 // Contract configuration
 const CONTRACT_ADDRESS = "0xf5ea995aEE58B09dD9fbe2f8228a97c74129685A";
 const CONTRACT_ABI = [
@@ -89,11 +120,11 @@ const provider = new ethers.JsonRpcProvider("https://rpc.primordial.bdagscan.com
 const DEMO_ACCOUNTS = {
   user: {
     address: "0x8732F4d3F2f91BbB19F061F119F397d5cbC17d3c",
-    privateKey: process.env.USER_PRIVATE_KEY || "0x" + "0".repeat(64)
+    privateKey: process.env.USER_PRIVATE_KEY 
   },
   lawEnforcement: {
     address: "0x0a213702b6050FbF645925dAb4a143F0002a4B97",
-    privateKey: process.env.LAW_ENFORCEMENT_PRIVATE_KEY || "0x" + "0".repeat(64)
+    privateKey: process.env.LAW_ENFORCEMENT_PRIVATE_KEY 
   }
 };
 
@@ -218,7 +249,10 @@ app.post('/api/files/upload', upload.single('file'), async (req, res) => {
       encryptionKey
     );
 
-    const receipt = await tx.wait();
+    const receipt = await tx.wait().catch(error => {
+      console.error('Transaction failed:', error);
+      throw new Error('Blockchain transaction failed. This may be due to invalid private keys.');
+    });
     
     // Extract file ID from events
     const event = receipt.logs.find(log => {
@@ -362,7 +396,10 @@ app.post('/api/files/:fileId/share', async (req, res) => {
     const contract = getContractInstance(privateKey);
     
     const tx = await contract.shareFile(fileId, recipientAddress);
-    await tx.wait();
+    await tx.wait().catch(error => {
+      console.error('Share transaction failed:', error);
+      throw new Error('Blockchain transaction failed. This may be due to invalid private keys.');
+    });
     
     res.json({
       success: true,
@@ -404,7 +441,10 @@ app.delete('/api/files/:fileId', async (req, res) => {
     const contract = getContractInstance(privateKey);
     
     const tx = await contract.deleteFile(fileId);
-    await tx.wait();
+    await tx.wait().catch(error => {
+      console.error('Delete transaction failed:', error);
+      throw new Error('Blockchain transaction failed. This may be due to invalid private keys.');
+    });
     
     res.json({
       success: true,
@@ -611,7 +651,10 @@ app.post('/api/demo/populate', async (req, res) => {
           file.private ? 'demo_encryption_key' : ''
         );
         
-        const receipt = await tx.wait();
+        const receipt = await tx.wait().catch(error => {
+          console.error('Demo data upload transaction failed:', error);
+          throw new Error('Blockchain transaction failed. This may be due to invalid private keys.');
+        });
         results.push({
           user: 'demo_user',
           fileName: file.name,
@@ -647,7 +690,10 @@ app.post('/api/demo/populate', async (req, res) => {
           file.private ? 'le_encryption_key' : ''
         );
         
-        await tx.wait();
+        await tx.wait().catch(error => {
+          console.error('Demo data upload transaction failed:', error);
+          throw new Error('Blockchain transaction failed. This may be due to invalid private keys.');
+        });
         results.push({
           user: 'law_enforcement',
           fileName: file.name,
@@ -670,7 +716,10 @@ app.post('/api/demo/populate', async (req, res) => {
     try {
       // User shares a public document with law enforcement
       const shareUserToLE = await userContract.shareFile(1, DEMO_ACCOUNTS.lawEnforcement.address);
-      await shareUserToLE.wait();
+      await shareUserToLE.wait().catch(error => {
+        console.error('Demo data share transaction failed:', error);
+        throw new Error('Blockchain transaction failed. This may be due to invalid private keys.');
+      });
       results.push({
         action: 'share',
         from: 'demo_user',
@@ -683,7 +732,10 @@ app.post('/api/demo/populate', async (req, res) => {
 
       // Law enforcement shares public notice with user
       const shareLEToUser = await leContract.shareFile(6, DEMO_ACCOUNTS.user.address);
-      await shareLEToUser.wait();
+      await shareLEToUser.wait().catch(error => {
+        console.error('Demo data share transaction failed:', error);
+        throw new Error('Blockchain transaction failed. This may be due to invalid private keys.');
+      });
       results.push({
         action: 'share',
         from: 'law_enforcement',
@@ -748,6 +800,15 @@ app.listen(PORT, async () => {
     console.log(`💡 To use real IPFS: install and run 'ipfs daemon'`);
   } else {
     console.log(`✅ Connected to IPFS daemon`);
+  }
+  
+  // Show private key status
+  if (DEMO_ACCOUNTS.user.privateKey === '0x' + '0'.repeat(64) ||
+      DEMO_ACCOUNTS.lawEnforcement.privateKey === '0x' + '0'.repeat(64)) {
+    console.log(`⚠️  Using Mock Private Keys (blockchain operations will fail)`);
+    console.log(`💡 To enable blockchain operations: set valid private keys in .env file`);
+  } else {
+    console.log(`✅ Using Valid Private Keys (blockchain operations should work)`);
   }
   
   console.log('\n📖 Available Endpoints:');

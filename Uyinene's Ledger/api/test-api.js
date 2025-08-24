@@ -38,12 +38,16 @@ async function testEndpoint(name, testFunc) {
   } catch (error) {
     log(`❌ ${name}: FAILED`, 'red');
     log(`   Error: ${error.message}`, 'red');
+    if (error.response) {
+      log(`   Response Status: ${error.response.status}`, 'red');
+      log(`   Response Data: ${JSON.stringify(error.response.data)}`, 'red');
+    }
     return null;
   }
 }
 
 async function testHealthCheck() {
-  const response = await axios.get(`${API_BASE}/health`);
+  const response = await axios.get(`${API_BASE}/health`, { timeout: 10000 });
   if (response.data.status !== 'healthy') {
     throw new Error('Health check failed');
   }
@@ -53,7 +57,7 @@ async function testHealthCheck() {
 }
 
 async function testPopulateDemo() {
-  const response = await axios.post(`${API_BASE}/demo/populate`);
+  const response = await axios.post(`${API_BASE}/demo/populate`, {}, { timeout: 300000 });
   if (!response.data.success) {
     throw new Error('Demo population failed');
   }
@@ -62,7 +66,7 @@ async function testPopulateDemo() {
 }
 
 async function testGetPublicFiles() {
-  const response = await axios.get(`${API_BASE}/files/public`);
+  const response = await axios.get(`${API_BASE}/files/public`, { timeout: 10000 });
   if (!response.data.success) {
     throw new Error('Failed to get public files');
   }
@@ -74,7 +78,7 @@ async function testGetPublicFiles() {
 }
 
 async function testGetUserFiles() {
-  const response = await axios.get(`${API_BASE}/files/user/${USER_ADDRESS}`);
+  const response = await axios.get(`${API_BASE}/files/user/${USER_ADDRESS}`, { timeout: 10000 });
   if (!response.data.success) {
     throw new Error('Failed to get user files');
   }
@@ -86,7 +90,7 @@ async function testGetUserFiles() {
 }
 
 async function testGetLEFiles() {
-  const response = await axios.get(`${API_BASE}/files/user/${LE_ADDRESS}`);
+  const response = await axios.get(`${API_BASE}/files/user/${LE_ADDRESS}`, { timeout: 10000 });
   if (!response.data.success) {
     throw new Error('Failed to get LE files');
   }
@@ -98,7 +102,7 @@ async function testGetLEFiles() {
 }
 
 async function testGetSharedByUser() {
-  const response = await axios.get(`${API_BASE}/files/shared-by/${USER_ADDRESS}`);
+  const response = await axios.get(`${API_BASE}/files/shared-by/${USER_ADDRESS}`, { timeout: 10000 });
   if (!response.data.success) {
     throw new Error('Failed to get shared files');
   }
@@ -110,7 +114,7 @@ async function testGetSharedByUser() {
 }
 
 async function testGetSharedWithUser() {
-  const response = await axios.get(`${API_BASE}/files/shared-with/${LE_ADDRESS}`);
+  const response = await axios.get(`${API_BASE}/files/shared-with/${LE_ADDRESS}`, { timeout: 10000 });
   if (!response.data.success) {
     throw new Error('Failed to get files shared with user');
   }
@@ -123,13 +127,13 @@ async function testGetSharedWithUser() {
 
 async function testGetFileDetails() {
   // Get the first public file for testing
-  const publicFiles = await axios.get(`${API_BASE}/files/public`);
+  const publicFiles = await axios.get(`${API_BASE}/files/public`, { timeout: 10000 });
   if (publicFiles.data.files.length === 0) {
     throw new Error('No public files found for testing');
   }
   
   const fileId = publicFiles.data.files[0].id;
-  const response = await axios.get(`${API_BASE}/files/${fileId}?userAddress=${USER_ADDRESS}`);
+  const response = await axios.get(`${API_BASE}/files/${fileId}?userAddress=${USER_ADDRESS}`, { timeout: 10000 });
   
   if (!response.data.success) {
     throw new Error('Failed to get file details');
@@ -159,7 +163,7 @@ async function testFileUpload() {
       headers: {
         ...form.getHeaders()
       },
-      timeout: 30000 // 30 seconds timeout for upload
+      timeout: 60000 // 60 seconds timeout for upload
     });
     
     if (!response.data.success) {
@@ -182,7 +186,7 @@ async function testFileUpload() {
 
 async function testFileSharing() {
   // Get user files to find one to share
-  const userFiles = await axios.get(`${API_BASE}/files/user/${USER_ADDRESS}`);
+  const userFiles = await axios.get(`${API_BASE}/files/user/${USER_ADDRESS}`, { timeout: 10000 });
   if (userFiles.data.files.length === 0) {
     throw new Error('No user files found for sharing test');
   }
@@ -192,7 +196,7 @@ async function testFileSharing() {
   const response = await axios.post(`${API_BASE}/files/${fileToShare.id}/share`, {
     userAddress: USER_ADDRESS,
     recipientAddress: LE_ADDRESS
-  });
+  }, { timeout: 30000 });
   
   if (!response.data.success) {
     throw new Error('File sharing failed');

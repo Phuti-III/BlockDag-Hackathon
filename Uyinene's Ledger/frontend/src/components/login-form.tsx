@@ -5,9 +5,13 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
+import { FcGoogle } from "react-icons/fc";
 import Link from "next/link";
 
-export default function LoginPage() {
+interface LoginPageProps extends React.HTMLAttributes<HTMLDivElement> {}
+
+export default function LoginPage({ className, ...props }: LoginPageProps) {
   const router = useRouter();
 
   const [email, setEmail] = useState("");
@@ -22,26 +26,29 @@ export default function LoginPage() {
       setError("");
       // Redirect to dashboard
       router.push("/dashboard");
-    } else {
+    } 
+    // Basic validation
+    if (!email || !password) {
+      setError("All fields are required.");
+      return;
+    }
+    else {
       setError("Invalid email or password");
     }
   };
 
   return (
-    <div className="flex flex-col gap-6">
-      <form
-        onSubmit={handleLogin}
-        className="flex flex-col items-center gap-2 font-medium"
-      >
+    <div className={cn("flex flex-col gap-6", className)} {...props}>
+      <form onSubmit={handleLogin}>
         <div className="flex flex-col gap-6">
           <div className="flex flex-col items-center gap-2">
             <Link href="/" className="flex flex-col items-center gap-2 font-medium">
               <div className="flex size-8 items-center justify-center rounded-md">
-                <IoIosBook size={30} color="black"/>
+                <IoIosBook size={30} color="black" />
               </div>
-              <span className="sr-only">Acme Inc.</span>
+              <span className="sr-only">UL Inc.</span>
             </Link>
-            <h1 className="text-2xl font-bold">Login</h1>
+            <h1 className="text-xl font-bold">Login</h1>
             <div className="text-center text-sm">
               Don&apos;t have an account?{" "}
               <Link href="/register" className="underline underline-offset-4 hover:text-blue-600">
@@ -49,62 +56,66 @@ export default function LoginPage() {
               </Link>
             </div>
           </div>
-        </div>
-
-        <div className="flex flex-col gap-6">
+          
+          <div className="flex flex-col gap-6">
             <div className="grid gap-3">
-             <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">Email</Label>
               <Input
-              id="email"
-              type="email"
-              placeholder="you@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
+                id="email"
+                type="email"
+                placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
-            </div>
 
-            <div className="mb-6">
               <Label htmlFor="password">Password</Label>
               <Input
                 id="password"
+                name="password"
                 type="password"
                 placeholder="********"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                className="border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
-            {error && <p className="text-red-600 mb-4">{error}</p>}
+          </div>
 
-            <Button type="submit" className="w-full hover:bg-blue-600 hover:text-white">
-              Login
-            </Button>
+          {error && <p className="text-red-600 text-sm">{error}</p>}
 
-        </div>
+          <Button
+            variant="outline"
+            type="submit"
+            className="w-full hover:bg-blue-600 hover:text-white"
+          >
+           Login
+          </Button>
 
-        <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
-            <span className="bg-background text-muted-foreground relative z-10 px-2">
+          <div className="relative text-center text-sm">
+            <span className="relative z-10 left:5 right:5 bg-background text-muted-foreground">
               Or
             </span>
+
+            <div className="absolute left-5 right-5 top-1/2 h-px bg-border -z-0"></div>
           </div>
-          <div className="grid gap-4 sm:grid-cols-1">
-            <Button variant="outline" type="button" className="w-full">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <path
-                  d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"
-                  fill="currentColor"
-                />
-              </svg>
+
+
+          <div className="grid gap-4 sm:grid-cols-1 ">
+            <Button variant="outline" type="button" className="w-full hover:bg-blue-600 hover:text-white">
+              <FcGoogle />
               Continue with Google
             </Button>
           </div>
-
+        </div>
       </form>
 
-      <div className="text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4">
-        By clicking continue, you agree to our <Link href="/termsOfService" className="underline hover:text-blue-600">Terms of Service</Link>{" "}
-        and <Link href="/privacyPolicy"  className="underline hover:text-blue-600">Privacy Policy</Link>.
+      <div className="text-muted-foreground text-center text-xs">
+        By clicking continue, you agree to our{" "}
+        <Link href="/termsOfService" className="underline underline-offset-4 text-blue-600">Terms of Service</Link> and{" "}
+        <Link href="/privacyPolicy" className="underline underline-offset-4 text-blue-600">Privacy Policy</Link>.
       </div>
     </div>
   );

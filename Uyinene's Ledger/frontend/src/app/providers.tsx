@@ -6,7 +6,11 @@ import { WagmiProvider } from 'wagmi';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { blockdagPrimordial } from '../chains';
 
-const projectId = process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID || '';
+const projectId = process.env.NEXT_PUBLIC_PROJECT_ID;
+
+if (!projectId) {
+  throw new Error("WalletConnect projectId is missing. Add it to .env.local");
+}
 
 const metadata = {
   name: 'Uyinene\'s Ledger',
@@ -35,3 +39,5 @@ export function Providers({ children }: { children: React.ReactNode }) {
     </WagmiProvider>
   );
 } 
+
+export default Providers;

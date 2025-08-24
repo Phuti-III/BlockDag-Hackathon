@@ -13,25 +13,47 @@ import {
   CheckCircle,
   AlertTriangle,
   Eye,
+  TrendingUp,
+  Activity
 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import QuickUpload from "@/components/QuickUpload";
+import { useAuth } from "@/context/AuthContext";
 
 export default function DashboardPage() {
+  const { user } = useAuth();
+
   const recentDocuments = [
     { id: 1, name: "Text Messages - March 2024", type: "Screenshots", date: "2024-03-15", status: "verified", size: "2.3 MB" },
     { id: 2, name: "Medical Report - Dr. Smith", type: "PDF", date: "2024-03-10", status: "pending", size: "1.1 MB" },
     { id: 3, name: "Incident Photos - March 8", type: "Images", date: "2024-03-08", status: "verified", size: "5.7 MB" },
   ];
 
-  const stats = { totalDocuments: 15, verifiedDocuments: 12, pendingReview: 3, storageUsed: 45, lastActivity: "2 hours ago" };
+  const stats = { 
+    totalDocuments: 15, 
+    verifiedDocuments: 12, 
+    pendingReview: 3, 
+    storageUsed: 45, 
+    lastActivity: "2 hours ago",
+    blockchainUploads: 8,
+    ipfsStorage: "24.7 MB"
+  };
+
+  const handleQuickUploadComplete = (results: any[]) => {
+    // Handle upload completion - could refresh stats, show notifications, etc.
+    console.log('Quick upload completed:', results);
+  };
 
   return (
     <div className="min-h-screen bg-background pt-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Welcome */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-foreground mb-2">Welcome to Your Secure Evidence Center</h1>
-          <p className="text-lg text-muted-foreground">Your progress in building a comprehensive case record. Every document is encrypted and timestamped.</p>
+          <h1 className="text-3xl font-bold text-foreground mb-2">
+            Welcome to Your Secure Evidence Center, {user?.name}
+          </h1>
+          <p className="text-lg text-muted-foreground">
+            Your progress in building a comprehensive case record. Every document is encrypted and stored on BlockDAG blockchain.
+          </p>
         </div>
 
         {/* Quick Stats */}
@@ -52,8 +74,8 @@ export default function DashboardPage() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-primary-foreground text-sm font-medium">Verified</p>
-                  <p className="text-3xl font-bold text-primary-foreground">{stats.verifiedDocuments}</p>
+                  <p className="text-primary-foreground text-sm font-medium">BlockDAG Verified</p>
+                  <p className="text-3xl font-bold text-primary-foreground">{stats.blockchainUploads}</p>
                 </div>
                 <CheckCircle className="h-8 w-8 text-primary-foreground" />
               </div>
@@ -64,10 +86,10 @@ export default function DashboardPage() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-accent-foreground text-sm font-medium">Pending Review</p>
-                  <p className="text-3xl font-bold text-accent-foreground">{stats.pendingReview}</p>
+                  <p className="text-accent-foreground text-sm font-medium">IPFS Storage</p>
+                  <p className="text-3xl font-bold text-accent-foreground">{stats.ipfsStorage}</p>
                 </div>
-                <Clock className="h-8 w-8 text-accent-foreground" />
+                <Shield className="h-8 w-8 text-accent-foreground" />
               </div>
             </CardContent>
           </Card>
@@ -76,10 +98,10 @@ export default function DashboardPage() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-muted-foreground text-sm font-medium">Storage Used</p>
-                  <p className="text-3xl font-bold text-foreground">{stats.storageUsed}%</p>
+                  <p className="text-muted-foreground text-sm font-medium">Last Activity</p>
+                  <p className="text-lg font-bold text-foreground">{stats.lastActivity}</p>
                 </div>
-                <Shield className="h-8 w-8 text-primary" />
+                <Activity className="h-8 w-8 text-primary" />
               </div>
             </CardContent>
           </Card>
@@ -125,15 +147,22 @@ export default function DashboardPage() {
           </div>
 
           <div className="space-y-6">
+            {/* Quick Upload Component */}
+            <QuickUpload 
+              maxFiles={3} 
+              onUploadComplete={handleQuickUploadComplete}
+            />
+
+            {/* Quick Actions */}
             <Card className="shadow-gentle">
               <CardHeader>
-                <CardTitle className="text-lg font-semibold">Quick Actions</CardTitle>
+                <CardTitle className="text-lg font-semibold">Actions</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 <Link href="/upload">
                   <Button className="w-full bg-gradient-primary hover:opacity-90" size="lg">
                     <Upload className="h-5 w-5 mr-2" />
-                    Upload New Evidence
+                    Full Upload Page
                   </Button>
                 </Link>
                 <Link href="/list">
@@ -145,17 +174,22 @@ export default function DashboardPage() {
               </CardContent>
             </Card>
 
+            {/* Security Status */}
             <Card className="shadow-gentle">
               <CardHeader>
                 <CardTitle className="text-lg font-semibold flex items-center">
                   <Shield className="h-5 w-5 mr-2 text-trust" />
-                  Security Status
+                  BlockDAG Security
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">Encryption</span>
+                  <span className="text-sm text-muted-foreground">Blockchain</span>
                   <Badge className="bg-trust text-white">Active</Badge>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">IPFS Storage</span>
+                  <Badge className="bg-trust text-white">Connected</Badge>
                 </div>
                 <div className="pt-2">
                   <div className="flex items-center justify-between mb-2">
@@ -167,6 +201,7 @@ export default function DashboardPage() {
               </CardContent>
             </Card>
 
+            {/* Helpful Tip */}
             <Card className="shadow-gentle border-amber-200 bg-gradient-warm">
               <CardHeader>
                 <CardTitle className="text-lg font-semibold flex items-center text-accent-foreground">
@@ -176,7 +211,7 @@ export default function DashboardPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-accent-foreground">
-                  Remember to include dates, times, and locations with your evidence uploads.
+                  Use Quick Upload for immediate evidence storage, or the Full Upload page for private files and detailed metadata.
                 </p>
               </CardContent>
             </Card>

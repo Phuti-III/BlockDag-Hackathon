@@ -2,7 +2,7 @@
     <p>	
 	    <a href="(https://www.morphl2.io/)">	
             <div>	
-	           <img width="400px" src="https://blockdag.network/images/presskit/Logo.svg" align="center" alt="BlockDAG" />	
+	           <img width="400px" src="https://blockdag.network/images/presskit/Logo.svg" align="center" alt="U Ledger" />	
 		    </div>
 	    </a>
             <br>

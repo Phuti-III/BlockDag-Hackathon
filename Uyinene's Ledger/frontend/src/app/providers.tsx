@@ -9,9 +9,9 @@ import { blockdagPrimordial } from '../chains';
 const projectId = process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID || '';
 
 const metadata = {
-  name: 'BlockDAG Starter Kit',
-  description: 'BlockDAG Starter Kit Web3 App',
-  url: 'https://blockdag.network', 
+  name: 'Uyinene\'s Ledger',
+  description: 'Uyinene\'s Ledger',
+  url: 'http://localhost:3001', 
   icons: ['https://avatars.githubusercontent.com/u/37784886']
 };
 

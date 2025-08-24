@@ -2,7 +2,7 @@ import { Chain } from 'viem';
 
 export const blockdagPrimordial = {
   id: 1043,
-  name: 'BlockDAG Primordial',
+  name: 'Uyinene\'s Ledger',
   nativeCurrency: {
     decimals: 18,
     name: 'BlockDAG',
